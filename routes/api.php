@@ -26,5 +26,6 @@ Route::post('/property/task/','Admin\Tasks_activityCrudController@storeFromPrope
 
 Route::post('/listing/create/{id}','Admin\ListingCrudController@store');
 
+Route::resource('accounts', 'API\AccountAPIController');
 
-Route::resource('accounts', 'AccountAPIController');
+Route::resource('contacts', 'API\ContactAPIController');

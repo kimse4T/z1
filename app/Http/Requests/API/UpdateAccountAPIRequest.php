@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API;
 
+use App\Http\Requests\AccountRequest;
 use App\Models\Account;
 use InfyOm\Generator\Request\APIRequest;
 
@@ -24,8 +25,6 @@ class UpdateAccountAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Account::$rules;
-        
-        return $rules;
+        return AccountRequest::apiRules();
     }
 }

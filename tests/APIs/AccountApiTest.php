@@ -15,14 +15,15 @@ class AccountApiTest extends TestCase
      */
     public function test_create_account()
     {
-        $account = factory(Account::class)->make()->toArray();
+
+        $account = factory(Account::class)->make();
 
         $this->response = $this->json(
             'POST',
-            '/api/accounts', $account
+            '/api/accounts', $account->toArray()
         );
 
-        $this->assertApiResponse($account);
+        $this->assertApiResponse($account->toArray());
     }
 
     /**
@@ -32,10 +33,14 @@ class AccountApiTest extends TestCase
     {
         $account = factory(Account::class)->create();
 
+        //dd($account);
+
         $this->response = $this->json(
             'GET',
             '/api/accounts/'.$account->id
         );
+
+
 
         $this->assertApiResponse($account->toArray());
     }

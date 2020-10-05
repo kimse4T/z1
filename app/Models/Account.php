@@ -25,6 +25,12 @@ class Account extends Model
     // protected $casts = [
     //     'photos' => 'array'
     // ];
+    public static $rules = [
+        'name' => 'required|min:2|max:30',
+        'email' =>  'required|email',
+        'phone' =>  'required|numeric',
+        'industry' =>  'required',
+    ];
 
     public function contact(){
         return $this->belongsToMany('App\Models\Contact');

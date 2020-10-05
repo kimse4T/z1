@@ -23,14 +23,20 @@ class AccountRequest extends FormRequest
      *
      * @return array
      */
+
+
     public function rules()
+    {
+        return $this->apiRules();
+    }
+
+    public static function apiRules()
     {
         return [
             'name' => 'required|min:2|max:30',
             'email' =>  'required|email',
             'phone' =>  'required|numeric',
             'industry' =>  'required',
-
         ];
     }
 

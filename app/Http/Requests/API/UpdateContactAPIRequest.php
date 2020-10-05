@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\Account;
+use App\Models\Contact;
 use InfyOm\Generator\Request\APIRequest;
-use App\Http\Requests\AccountRequest;
 
-class CreateAccountAPIRequest extends APIRequest
+class UpdateContactAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +24,8 @@ class CreateAccountAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return AccountRequest::apiRules();
+        $rules = Contact::$rules;
+        
+        return $rules;
     }
 }
