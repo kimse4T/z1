@@ -25,6 +25,11 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
+        return $this->apiRules();
+    }
+
+    public static function apiRules()
+    {
         return [
             'first_name' => 'required|regex:/^[a-zA-Z]+$/u|min:2|max:30',
             'last_name'  => 'required|regex:/^[a-zA-Z]+$/u|min:2|max:30',
