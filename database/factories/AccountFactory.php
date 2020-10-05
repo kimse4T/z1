@@ -11,7 +11,7 @@ $factory->define(Account::class, function (Faker $faker) {
         'account_number' => $faker->numberBetween(0,9999999),
         'bank_branch' => $faker->name,
         'billing_address' =>$faker->name,
-        'valid_until'   =>$faker->date('Y-m-d H:i:s'),
+        'valid_until'   =>$faker->date('Y-m-d'),
         'name'  => $faker->name,
         'email' => $faker->email,
         'phone' => $faker->numberBetween(0,1234567),
