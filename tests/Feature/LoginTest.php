@@ -29,20 +29,20 @@ class LoginTest extends TestCase
 
 
     /** @test */
-    public function it_can_login()
-    {
-        $response = $this->post('/admin/login',[
-            'email' => $this->user->email,
-            'password' => $this->password,
-        ]);
+    // public function it_can_login()
+    // {
+    //     $response = $this->post('/admin/login',[
+    //         'email' => $this->user->email,
+    //         'password' => $this->password,
+    //     ]);
 
-        $response->assertRedirect('/admin/dashboard');
+    //     $response->assertRedirect('/admin/dashboard');
 
-        $response->assertStatus(302);
+    //     $response->assertStatus(302);
 
-        $this->assertAuthenticatedAs($this->user);
+    //     $this->assertAuthenticatedAs($this->user);
 
-    }
+    // }
 
     /** @test */
     public function it_can_not_login_with_incorrect_email()
