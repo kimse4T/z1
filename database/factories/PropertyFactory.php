@@ -22,7 +22,7 @@ $factory->define(Property::class, function (Faker $faker) {
         'sold_price_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
         'sale_commission'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rent_price_asking'  =>$faker->numberBetween($min = 10, $max = 1000),
-        'rent_price_asking_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
+        'rent_asking_price_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rent_price'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rent_price_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rent_list_price'  =>$faker->numberBetween($min = 10, $max = 1000),

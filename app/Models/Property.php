@@ -126,11 +126,11 @@ class Property extends Model
 
         'sale_asking_price_per_sqm',
         'sale_price_per_sqm',
-        'sale_listing_price_per_sqm',
+        'sale_list_price_per_sqm',
         'sold_price_per_sqm',
         'rent_asking_price_per_sqm',
         'rent_price_per_sqm',
-        'rent_listing_price_per_sqm',
+        'rent_list_price_per_sqm',
         'rented_price_per_sqm',
 
         'indication_price_date',
@@ -144,7 +144,7 @@ class Property extends Model
         'agreement_file',
         'agreement_sign_date',
         'agreement_expired_date',
-        'rental_commission',
+        'rental_cmmission',
         'sale_commission',
         'total_size_by_title_deed',
         ];
@@ -172,11 +172,11 @@ class Property extends Model
 
         'sale_asking_price_per_sqm' => 'double',
         'sale_price_per_sqm' => 'double',
-        'sale_listing_price_per_sqm' => 'double',
+        'sale_list_price_per_sqm' => 'double',
         'sold_price_per_sqm' => 'double',
         'rent_asking_price_per_sqm' => 'double',
         'rent_price_per_sqm' => 'double',
-        'rent_listing_price_per_sqm' => 'double',
+        'rent_list_price_per_sqm' => 'double',
         'rented_price_per_sqm' => 'double',
 
         'sale_price_asking_updated_by' => 'string',
@@ -271,7 +271,7 @@ class Property extends Model
         'agreement_file' => 'array',
         'agreement_sign_date' => 'datetime',
         'agreement_expired_date' => 'datetime',
-        'rental_commission' => 'string',
+        'rental_cmmission' => 'string',
         'sale_commission' => 'string',
         'total_size_by_title_deed' => 'double',
         'polygon' => 'json'
