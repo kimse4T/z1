@@ -61,6 +61,7 @@ class PropertyApiTest extends TestCase
             'address'   =>  null,
         ])->toArray();
 
+
         $this->response = $this->json(
             'POST',
             '/api/properties', $property
@@ -226,7 +227,7 @@ class PropertyApiTest extends TestCase
 
         $this->assertErrorValidation(["sold_price_per_sqm"]);
     }
-    
+
 
     /** @test */
     public function can_not_create_property_with_sale_commission_notNumber()
@@ -347,7 +348,7 @@ class PropertyApiTest extends TestCase
 
         $this->assertErrorValidation(["rented_price"]);
     }
-    
+
     /** @test */
     public function can_not_create_property_with_rented_price_per_sqm_notNumber()
     {
@@ -377,7 +378,7 @@ class PropertyApiTest extends TestCase
 
         $this->assertErrorValidation(["rental_cmmission"]);
     }
-    
+
 
 
     /**
