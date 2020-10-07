@@ -29,3 +29,6 @@ Route::post('/listing/create/{id}','Admin\ListingCrudController@store');
 Route::resource('accounts', 'API\AccountAPIController');
 
 Route::resource('contacts', 'API\ContactAPIController');
+
+
+Route::resource('properties', 'PropertyAPIController');
