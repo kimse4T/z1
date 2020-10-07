@@ -13,7 +13,7 @@ $factory->define(Property::class, function (Faker $faker) {
         'land_length'=> $faker->numberBetween($min = 10, $max = 1000),
         'land_area'=> $faker->numberBetween($min = 10, $max = 1000),
         'sale_price_asking'  =>$faker->numberBetween($min = 10, $max = 1000),
-        'sale_price_asking_per_sqm'   =>$faker->numberBetween($min = 10, $max = 1000),
+        'sale_asking_price_per_sqm'   =>$faker->numberBetween($min = 10, $max = 1000),
         'sale_price'  =>$faker->numberBetween($min = 10, $max = 1000),
         'sale_price_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
         'sale_list_price'  =>$faker->numberBetween($min = 10, $max = 1000),
