@@ -273,6 +273,110 @@ class PropertyApiTest extends TestCase
         $this->assertErrorValidation(["rent_price_asking_per_sqm"]);
     }
 
+    /** @test */
+    public function can_not_create_property_with_rent_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_price' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_price"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rent_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_price_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_price_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rent_list_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_list_price' => "twenty"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_list_price"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rent_list_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_list_price_per_sqm' => "twenty"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_list_price_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rented_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rented_price' => "ten"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rented_price"]);
+    }
+    
+    /** @test */
+    public function can_not_create_property_with_rented_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rented_price_per_sqm' => "fifty five"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rented_price_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rental_commission_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rental_cmmission' => "six hundred"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rental_cmmission"]);
+    }
     
 
 
