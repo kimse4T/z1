@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Requests\API;
-
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use InfyOm\Generator\Request\APIRequest;
-
 class UpdateContactAPIRequest extends APIRequest
 {
     /**
@@ -24,8 +23,6 @@ class UpdateContactAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Contact::$rules;
-        
-        return $rules;
+        return ContactRequest::apiRules();
     }
 }

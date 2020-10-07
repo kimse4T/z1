@@ -39,9 +39,9 @@ class AccountApiTest extends TestCase
         $this->response = $this->json(
             'POST',
             '/api/accounts',$account->toArray()
-        )
-        ->assertStatus(422)
-        ->assertJsonValidationErrors("name");
+        );
+
+        $this->assertErrorValidation(['name']);
     }
 
     /**
@@ -57,9 +57,9 @@ class AccountApiTest extends TestCase
         $this->response = $this->json(
             'POST',
             '/api/accounts',$account->toArray()
-        )
-        ->assertStatus(422)
-        ->assertJsonValidationErrors("email");
+        );
+
+        $this->assertErrorValidation(['email']);
     }
 
     /**
@@ -75,9 +75,9 @@ class AccountApiTest extends TestCase
         $this->response = $this->json(
             'POST',
             '/api/accounts',$account->toArray()
-        )
-        ->assertStatus(422)
-        ->assertJsonValidationErrors("phone");
+        );
+
+        $this->assertErrorValidation(['phone']);
     }
 
     /**
@@ -93,9 +93,9 @@ class AccountApiTest extends TestCase
         $this->response = $this->json(
             'POST',
             '/api/accounts',$account->toArray()
-        )
-        ->assertStatus(422)
-        ->assertJsonValidationErrors("industry");
+        );
+
+        $this->assertErrorValidation(['industry']);
     }
 
     /**
@@ -111,7 +111,7 @@ class AccountApiTest extends TestCase
     {
         $account = factory(Account::class)->create();
         // dd($account)
-;        $this->response = $this->json(
+        $this->response = $this->json(
             'GET',
             '/api/accounts/'.$account->id
         );
