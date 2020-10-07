@@ -10,6 +10,33 @@ class PropertyApiTest extends TestCase
 {
     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
 
+     /**
+     * @test
+     */
+    public function test_read_property()
+    {
+        $property = factory(Property::class)->create();
+
+        $this->response = $this->json(
+            'GET',
+            '/api/properties/'.$property->id
+        );
+
+        $this->assertApiResponse($property->toArray());
+    }
+
+    /** @test */
+
+    public function get_all_property()
+    {
+        $this->response = $this->json(
+            'GET','/api/properties'
+        )
+
+        ->assertStatus(200);
+    }
+
+
     /**
      * @test
      */
@@ -28,17 +55,226 @@ class PropertyApiTest extends TestCase
     /**
      * @test
      */
-    public function test_read_property()
+    public function can_not_create_property_with_invalid_address()
     {
-        $property = factory(Property::class)->create();
+        $property = factory(Property::class)->make([
+            'address'   =>  null,
+        ])->toArray();
 
         $this->response = $this->json(
-            'GET',
-            '/api/properties/'.$property->id
+            'POST',
+            '/api/properties', $property
         );
 
-        $this->assertApiResponse($property->toArray());
+        $this->assertErrorValidation(["address"]);
     }
+
+    /**
+     * @test
+     */
+    public function can_not_create_property_with_land_width_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'land_width' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["land_width"]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_not_create_property_with_land_length_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'land_length' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["land_length"]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_not_create_property_with_sale_price_asking_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_price_asking' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_price_asking"]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_not_create_property_with_sale_price_asking_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_price_asking_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_price_asking_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sale_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_price' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_price"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sale_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_price_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_price_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sale_list_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_list_price' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_list_price"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sale_list_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_list_price_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_list_price_per_sqm"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sold_price_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sold_price' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sold_price"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_sold_price_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sold_price_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sold_price_per_sqm"]);
+    }
+    
+
+    /** @test */
+    public function can_not_create_property_with_sale_commission_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'sale_commission' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["sale_commission"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rent_price_asking_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_price_asking' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_price_asking"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_rent_price_asking_per_sqm_notNumber()
+    {
+        $property = factory(Property::class)->make([
+            'rent_price_asking_per_sqm' => "ABC"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["rent_price_asking_per_sqm"]);
+    }
+
+    
+
 
     /**
      * @test
