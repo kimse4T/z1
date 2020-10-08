@@ -34,6 +34,7 @@ class PropertyAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+        //dd("234");
         $properties = $this->propertyRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
@@ -53,11 +54,12 @@ class PropertyAPIController extends AppBaseController
      */
     public function store(CreatePropertyAPIRequest $request)
     {
+        // dd("asf");
         $input = $request->all();
 
-        $property = $this->propertyRepository->create($input);
+        // $property = $this->propertyRepository->create($input);
 
-        return $this->sendResponse($property->toArray(), 'Property saved successfully');
+        // return $this->sendResponse($property->toArray(), 'Property saved successfully');
     }
 
     /**

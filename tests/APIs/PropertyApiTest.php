@@ -17,6 +17,8 @@ class PropertyApiTest extends TestCase
     {
         $property = factory(Property::class)->create();
 
+        dd($property);
+
         $this->response = $this->json(
             'GET',
             '/api/properties/'.$property->id
