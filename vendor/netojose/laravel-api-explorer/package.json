@@ -1,0 +1,47 @@
+{
+    "name": "apiexplorer",
+    "version": "2.0.1",
+    "description": "API explorer front end",
+    "main": "index.js",
+    "keywords": [
+        "API",
+        "explorer",
+        "React",
+        "Laravel"
+    ],
+    "author": "José Neto",
+    "license": "MIT",
+    "scripts": {
+        "dev": "webpack ---mode=development",
+        "dev:watch": "webpack ---mode=development --watch",
+        "build": "webpack ---mode=production"
+    },
+    "dependencies": {
+        "@material-ui/core": "^4.5.0",
+        "@material-ui/icons": "^4.4.3",
+        "axios": "^0.19.0",
+        "hash-sum": "^2.0.0",
+        "jsoneditor": "^7.0.5",
+        "prop-types": "^15.7.2",
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.6.2",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+        "@babel/preset-env": "^7.6.2",
+        "@babel/preset-react": "^7.0.0",
+        "babel-eslint": "^10.0.3",
+        "babel-loader": "^8.0.6",
+        "css-loader": "^3.2.0",
+        "eslint": "^6.5.1",
+        "eslint-plugin-babel": "^5.3.0",
+        "eslint-plugin-react": "^7.16.0",
+        "eslint-plugin-react-hooks": "^2.1.2",
+        "style-loader": "^1.0.0",
+        "svg-url-loader": "^3.0.2",
+        "webpack": "^4.41.0",
+        "webpack-cli": "^3.3.9"
+    }
+}

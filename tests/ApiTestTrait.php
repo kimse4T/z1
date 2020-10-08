@@ -9,6 +9,8 @@ trait ApiTestTrait
         $this->assertApiSuccess();
 
         $response = json_decode($this->response->getContent(), true);
+
+        //dd($response);
         $responseData = $response['data'];
 
         $this->assertNotEmpty($responseData['id']);
@@ -34,7 +36,8 @@ trait ApiTestTrait
     public function assertErrorValidation(array $fields=null)
     {
         $this->response->assertStatus(422);
-            if($fields)
-                $this->response->assertJsonValidationErrors($fields);
+
+        if($fields)
+            $this->response->assertJsonValidationErrors($fields);
     }
 }

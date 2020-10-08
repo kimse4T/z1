@@ -5,6 +5,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Property;
+use App\PropertyTitleDeed;
+use App\Unit;
 
 class PropertyApiTest extends TestCase
 {
@@ -17,7 +19,7 @@ class PropertyApiTest extends TestCase
     {
         $property = factory(Property::class)->create();
 
-        dd($property);
+        // dd($property);
 
         $this->response = $this->json(
             'GET',
@@ -46,10 +48,18 @@ class PropertyApiTest extends TestCase
     {
         $property = factory(Property::class)->make()->toArray();
 
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
         $this->response = $this->json(
             'POST',
             '/api/properties', $property
         );
+
+        //dd($this->response);
 
         $this->assertApiResponse($property);
     }
@@ -70,6 +80,30 @@ class PropertyApiTest extends TestCase
         );
 
         $this->assertErrorValidation(["address"]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_not_create_property_with_invalid_title_deed_type()
+    {
+        $property = factory(Property::class)->make()->toArray();
+
+        $titledeed=factory(PropertyTitleDeed::class)->make(['title_deed_type'=>123])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        // $property["propertyTitleDeed"]=json_encode($titledeed);
+
+        $property = array_merge($property,$titledeed,$unit);
+
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_type"]);
     }
 
     /**
@@ -105,6 +139,86 @@ class PropertyApiTest extends TestCase
 
         $this->assertErrorValidation(["land_length"]);
     }
+
+    /** @test */
+    public function can_not_create_property_with_null_title_deed_type()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_type' => null
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_type"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notString_title_deed_type()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_type' => 1234
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_type"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_title_deed_no()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_no' => "ten"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_no"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_issued_year()
+    {
+        $property = factory(Property::class)->make([
+            'issued_year' => 1234
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["issued_year"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_parcel_no()
+    {
+        $property = factory(Property::class)->make([
+            'parcel_no' => "Ten"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["parcel_no"]);
+    }
+
+
+
+
+
 
     /**
      * @test

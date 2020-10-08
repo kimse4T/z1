@@ -17,6 +17,8 @@ class ContactApiTest extends TestCase
     {
         $contact = factory(Contact::class)->make()->toArray();
 
+        dd($contact);
+
         $this->response = $this->json(
             'POST',
             '/api/contacts', $contact
@@ -84,7 +86,7 @@ class ContactApiTest extends TestCase
         );
 
         $this->assertErrorValidation(["first_name"]);
-    } 
+    }
 
 
 
@@ -192,7 +194,7 @@ class ContactApiTest extends TestCase
 
         $this->assertErrorValidation(["type"]);
     }
-  
+
     /** @test */
     function it_can_not_create_contact_with_null_phone()
     {
