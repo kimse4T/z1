@@ -8,6 +8,8 @@ use App\Models\Property;
 use App\Repositories\PropertyRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Repositories\PropertyTitleDeedRepository;
+use App\Repositories\UnitRepository;
 use Response;
 
 /**
@@ -19,10 +21,14 @@ class PropertyAPIController extends AppBaseController
 {
     /** @var  PropertyRepository */
     private $propertyRepository;
+    private $propertyTitleDeedRepo;
+    private $unitRepo;
 
     public function __construct(PropertyRepository $propertyRepo)
     {
         $this->propertyRepository = $propertyRepo;
+        $this->propertyTitleDeedRepo = resolve(PropertyTitleDeedRepository::class);
+        $this->unitRepo = resolve(UnitRepository::class);
     }
 
     /**
@@ -34,7 +40,6 @@ class PropertyAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        //dd("234");
         $properties = $this->propertyRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
@@ -108,17 +113,15 @@ class PropertyAPIController extends AppBaseController
             'unit_completion_year'  => $request->all('unit_completion_year')['unit_completion_year'],
         ];
 
-        $titleDeed=["propertyTitleDeedRepeatable" => json_encode($inputTitleDeed)];
-
-        //dd($input);
+        $titleDeed=json_encode($inputTitleDeed);
 
         $property = $this->propertyRepository->create($inputProperty);
 
-        // $this->propertyTitleDeedRepo->create($titleDeed,$property->id);
+        $responseTitleDeed = $this->propertyTitleDeedRepo->create($titleDeed,$property->id);
+
+        $responseUnit = $this->unitRepo->create(request(),$property->id);
 
         $response=array_merge($property->toArray(),$inputTitleDeed,$inputUnit);
-
-        //dd($input);
 
         $property = $this->propertyRepository->create($inputProperty);
 

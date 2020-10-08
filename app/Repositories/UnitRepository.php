@@ -26,39 +26,65 @@ class UnitRepository
     {
         if(isset($request->unit_name)){
             $index=0;
-        foreach($request->unit_name as $unit_name){
-            $unit = new $this->model();
-            $unit->property_id=$property_id;
-            $unit->owner_id=$request->owner_id;
-            $unit->name=$unit_name;
-            $unit->width=$request->unit_width[$index];
-            $unit->length=$request->unit_length[$index];
-            $unit->area=$request->unit_width[$index]*$request->unit_length[$index];
-            $unit->completion_year=$request->unit_completion_year[$index];
-            $unit->useful_life=$request->unit_useful_life[$index];
-            $unit->effective_age=$request->unit_effective_age[$index];
-            $unit->cost_estimate=$request->unit_cost_estimates[$index];
-            $unit->stories=$request->unit_storey[$index];
-            $unit->bedroom=$request->unit_bedroom[$index];
-            $unit->bathroom=$request->unit_bathroom[$index];
-            $unit->livingroom=$request->unit_livingroom[$index];
-            $unit->dinningroom=$request->unit_dinningroom[$index];
-            $unit->floor=$request->unit_floor[$index];
-            $unit->car_parking=$request->unit_car_parking[$index];
-            $unit->motor_parking=$request->unit_motor_parking[$index];
-            $unit->contact_id=$request->contact_id;
-            $unit->gross_floor_area=$request->unit_gross_floor_area[$index];
-            $unit->net_floor_area=$request->unit_net_floor_area[$index];
-            $unit->balcony=$request->unit_balcony[$index];
-            $unit->kitchen=$request->unit_kitchen[$index];
-            $unit->swimming_pool=$request->unit_swimming_pool[$index];
-            $unit->security=$request->unit_security[$index];
-            $unit->fitness_gym=$request->unit_fitness_gym[$index];
-            $unit->lift=$request->unit_lift[$index];
-            $unit->style=$request->unit_style[$index];
-            $unit->save();
-            $index++;
-        };
+            if(is_array($request->unit_name)){
+                foreach($request->unit_name as $unit_name){
+                    $unit = new $this->model();
+                    $unit->property_id=$property_id;
+                    $unit->owner_id=$request->owner_id;
+                    $unit->name=$unit_name;
+                    $unit->width=$request->unit_width[$index];
+                    $unit->length=$request->unit_length[$index];
+                    $unit->area=$request->unit_width[$index]*$request->unit_length[$index];
+                    $unit->completion_year=$request->unit_completion_year[$index];
+                    $unit->useful_life=$request->unit_useful_life[$index];
+                    $unit->effective_age=$request->unit_effective_age[$index];
+                    $unit->cost_estimate=$request->unit_cost_estimates[$index];
+                    $unit->stories=$request->unit_storey[$index];
+                    $unit->bedroom=$request->unit_bedroom[$index];
+                    $unit->bathroom=$request->unit_bathroom[$index];
+                    $unit->livingroom=$request->unit_livingroom[$index];
+                    $unit->dinningroom=$request->unit_dinningroom[$index];
+                    $unit->floor=$request->unit_floor[$index];
+                    $unit->car_parking=$request->unit_car_parking[$index];
+                    $unit->motor_parking=$request->unit_motor_parking[$index];
+                    $unit->contact_id=$request->contact_id;
+                    $unit->gross_floor_area=$request->unit_gross_floor_area[$index];
+                    $unit->net_floor_area=$request->unit_net_floor_area[$index];
+                    $unit->balcony=$request->unit_balcony[$index];
+                    $unit->kitchen=$request->unit_kitchen[$index];
+                    $unit->swimming_pool=$request->unit_swimming_pool[$index];
+                    $unit->security=$request->unit_security[$index];
+                    $unit->fitness_gym=$request->unit_fitness_gym[$index];
+                    $unit->lift=$request->unit_lift[$index];
+                    $unit->style=$request->unit_style[$index];
+                    $unit->save();
+                    $index++;
+                };
+            }else{
+                $unit = new $this->model();
+                $unit->property_id=$property_id;
+                $unit->owner_id=$request->owner_id;
+                $unit->name=$request->unit_name;
+                $unit->width=$request->unit_width;
+                $unit->length=$request->unit_length;
+                $unit->area=$request->unit_width*$request->unit_length;
+                $unit->completion_year=$request->unit_completion_year;
+                $unit->useful_life=$request->unit_useful_life;
+                $unit->effective_age=$request->unit_effective_age;
+                $unit->cost_estimate=$request->unit_cost_estimates;
+                $unit->stories=$request->unit_storey;
+                $unit->bedroom=$request->unit_bedroom;
+                $unit->bathroom=$request->unit_bathroom;
+                $unit->livingroom=$request->unit_livingroom;
+                $unit->dinningroom=$request->unit_dinningroom;
+                $unit->floor=$request->unit_floor;
+                $unit->car_parking=$request->unit_car_parking;
+                $unit->motor_parking=$request->unit_motor_parking;
+                $unit->contact_id=$request->contact_id;
+                $unit->gross_floor_area=$request->unit_gross_floor_area;
+                $unit->save();
+            }
+
         }
 
     }

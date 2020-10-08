@@ -24,22 +24,39 @@ class PropertyTitleDeedRepository
     // create a new record in the database
     public function create($request,$property_id)
     {
-        $title_deed_arr = json_decode($request->propertyTitleDeedRepeatable);
+        $title_deed_arr = json_decode($request);
+
+        if(is_array($title_deed_arr)){
+            foreach($title_deed_arr as $title_deed){
+                $title = new $this->model();
+                $title->property_id=$property_id;
+                $title->title_deed_type=$title_deed->title_deed_type;
+                $title->title_deed_no=$title_deed->title_deed_no;
+                $title->issued_year=$title_deed->issued_year;
+                $title->parcel_no=$title_deed->parcel_no;
+                $title->image=$title_deed->title_deed_image;
+                $title->save();
+            };
+        }else{
+            //dd($title_deed_arr->title_deed_type);
+            $title = new $this->model();
+                $title->property_id=$property_id;
+                $title->title_deed_type=$title_deed_arr->title_deed_type;
+                $title->title_deed_no=$title_deed_arr->title_deed_no;
+                $title->issued_year=$title_deed_arr->issued_year;
+                $title->parcel_no=$title_deed_arr->parcel_no;
+                $title->save();
+                return $title;
+        }
+
+
         // $title_deeds = (array)$title_deed_arr[0];
         // $title_deeds['property_id'] = $property_id;
 
         // return $this->model->create($title_deeds);
         //dd($title_deed_arr);
-        foreach($title_deed_arr as $title_deed){
-            $title = new $this->model();
-            $title->property_id=$property_id;
-            $title->title_deed_type=$title_deed->title_deed_type;
-            $title->title_deed_no=$title_deed->title_deed_no;
-            $title->issued_year=$title_deed->issued_year;
-            $title->parcel_no=$title_deed->parcel_no;
-            $title->image=$title_deed->title_deed_image;
-            $title->save();
-        };
+
+        // return $response;
     }
 
 

@@ -10,7 +10,6 @@ trait ApiTestTrait
 
         $response = json_decode($this->response->getContent(), true);
 
-        //dd($response);
         $responseData = $response['data'];
 
         $this->assertNotEmpty($responseData['id']);

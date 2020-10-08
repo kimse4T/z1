@@ -794,13 +794,13 @@ class PropertyCrudController extends CrudController
 
     public function store()
     {
-        dd(request());
+        //dd(request());
         $this->priceAndCommission();
         $respone = $this->traitStore();
         $pro=Property::find($this->crud->entry->id);
         $pro->status='Draft';
         $pro->save();
-        $this->propertyTitleDeedRepo->create(request(),$this->crud->entry->id);
+        $this->propertyTitleDeedRepo->create(request()->propertyTitleDeedRepeatable,$this->crud->entry->id);
         $this->unitRepo->create(request(),$this->crud->entry->id);
         return $respone;
     }

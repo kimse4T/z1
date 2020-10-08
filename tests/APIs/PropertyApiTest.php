@@ -59,8 +59,6 @@ class PropertyApiTest extends TestCase
             '/api/properties', $property
         );
 
-        //dd($this->response);
-
         $this->assertApiResponse($property);
     }
 
@@ -93,10 +91,7 @@ class PropertyApiTest extends TestCase
 
         $unit=factory(Unit::class)->make()->toArray();
 
-        // $property["propertyTitleDeed"]=json_encode($titledeed);
-
         $property = array_merge($property,$titledeed,$unit);
-
 
         $this->response = $this->json(
             'POST',
