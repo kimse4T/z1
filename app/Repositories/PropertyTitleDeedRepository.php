@@ -38,15 +38,15 @@ class PropertyTitleDeedRepository
                 $title->save();
             };
         }else{
-            //dd($title_deed_arr->title_deed_type);
+            // dd($title_deed_arr->title_deed_type);
             $title = new $this->model();
                 $title->property_id=$property_id;
                 $title->title_deed_type=$title_deed_arr->title_deed_type;
                 $title->title_deed_no=$title_deed_arr->title_deed_no;
                 $title->issued_year=$title_deed_arr->issued_year;
                 $title->parcel_no=$title_deed_arr->parcel_no;
+
                 $title->save();
-                return $title;
         }
 
 
