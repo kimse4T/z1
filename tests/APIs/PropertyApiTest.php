@@ -104,6 +104,86 @@ class PropertyApiTest extends TestCase
         $this->assertErrorValidation(["land_length"]);
     }
 
+    /** @test */
+    public function can_not_create_property_with_null_title_deed_type()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_type' => null
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_type"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notString_title_deed_type()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_type' => 1234
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_type"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_title_deed_no()
+    {
+        $property = factory(Property::class)->make([
+            'title_deed_no' => "ten"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["title_deed_no"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_issued_year()
+    {
+        $property = factory(Property::class)->make([
+            'issued_year' => 1234
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["issued_year"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_parcel_no()
+    {
+        $property = factory(Property::class)->make([
+            'parcel_no' => "Ten"
+        ])->toArray();
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["parcel_no"]);
+    }
+
+
+
+
+
+
     /**
      * @test
      */

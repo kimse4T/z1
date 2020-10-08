@@ -34,7 +34,8 @@ trait ApiTestTrait
     public function assertErrorValidation(array $fields=null)
     {
         $this->response->assertStatus(422);
-            if($fields)
-                $this->response->assertJsonValidationErrors($fields);
+        
+        if($fields)
+            $this->response->assertJsonValidationErrors($fields);
     }
 }
