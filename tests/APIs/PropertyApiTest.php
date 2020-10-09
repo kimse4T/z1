@@ -17,9 +17,7 @@ class PropertyApiTest extends TestCase
      */
     public function test_read_property()
     {
-        $property = factory(Property::class)->create();
-
-        // dd($property);
+        $property = factory(Property::class)->create(["title_deed_type"=>123]);
 
         $this->response = $this->json(
             'GET',
