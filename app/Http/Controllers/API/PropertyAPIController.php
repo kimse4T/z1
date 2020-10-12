@@ -165,6 +165,8 @@ class PropertyAPIController extends AppBaseController
     {
         $input = $request->all();
 
+        dd($input);
+
         /** @var Property $property */
         $property = $this->propertyRepository->find($id);
 
