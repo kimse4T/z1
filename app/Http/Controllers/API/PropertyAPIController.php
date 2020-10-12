@@ -59,6 +59,7 @@ class PropertyAPIController extends AppBaseController
      */
     public function store(CreatePropertyAPIRequest $request)
     {
+        // dd($request->all());
         $inputProperty = [
             "address" => $request->all('address')['address'],
             "land_width" => $request->all('land_width')['land_width'],

@@ -17,7 +17,9 @@ class PropertyApiTest extends TestCase
      */
     public function test_read_property()
     {
-        $property = factory(Property::class)->create(["title_deed_type"=>123]);
+        $property = factory(Property::class)->create();
+
+        // dd($property);
 
         $this->response = $this->json(
             'GET',
@@ -60,14 +62,18 @@ class PropertyApiTest extends TestCase
         $this->assertApiResponse($property);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function can_not_create_property_with_invalid_address()
     {
         $property = factory(Property::class)->make([
             'address'   =>  null,
         ])->toArray();
+
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
 
         $this->response = $this->json(
@@ -108,6 +114,12 @@ class PropertyApiTest extends TestCase
             'land_width' => "ABC"
         ])->toArray();
 
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
         $this->response = $this->json(
             'POST',
             '/api/properties', $property
@@ -125,6 +137,12 @@ class PropertyApiTest extends TestCase
             'land_length' => "ABC"
         ])->toArray();
 
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
         $this->response = $this->json(
             'POST',
             '/api/properties', $property
@@ -136,9 +154,13 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function can_not_create_property_with_null_title_deed_type()
     {
-        $property = factory(Property::class)->make([
-            'title_deed_type' => null
-        ])->toArray();
+        $property = factory(Property::class)->make()->toArray();
+
+        $titledeed=factory(PropertyTitleDeed::class)->make(['title_deed_type'=>null])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -151,9 +173,13 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function can_not_create_property_with_notString_title_deed_type()
     {
-        $property = factory(Property::class)->make([
-            'title_deed_type' => 1234
-        ])->toArray();
+        $property = factory(Property::class)->make()->toArray();
+
+        $titledeed=factory(PropertyTitleDeed::class)->make(['title_deed_type'=>123])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -166,9 +192,14 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function can_not_create_property_with_notNumber_title_deed_no()
     {
-        $property = factory(Property::class)->make([
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make([
             'title_deed_no' => "ten"
         ])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -181,9 +212,14 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function can_not_create_property_with_notNumber_issued_year()
     {
-        $property = factory(Property::class)->make([
-            'issued_year' => 1234
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make([
+            'issued_year' => "ABC"
         ])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -196,9 +232,14 @@ class PropertyApiTest extends TestCase
     /** @test */
     public function can_not_create_property_with_notNumber_parcel_no()
     {
-        $property = factory(Property::class)->make([
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make([
             'parcel_no' => "Ten"
         ])->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -208,10 +249,346 @@ class PropertyApiTest extends TestCase
         $this->assertErrorValidation(["parcel_no"]);
     }
 
+    /** @test */
+    public function can_not_create_property_with_notNumber_total_size_by_title_deed()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make([
+            'total_size_by_title_deed' => "Ten"
+        ])->toArray();
 
+        $unit=factory(Unit::class)->make()->toArray();
 
+        $property = array_merge($property,$titledeed,$unit);
 
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
 
+        $this->assertErrorValidation(["total_size_by_title_deed"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notString_unit_name()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_name' =>  123
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_name"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_width()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_width' =>  "ten"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_width"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_length()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_length' =>  "twenty"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_length"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_total_size()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_total_size' =>  "two hundred"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_total_size"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_gross_floor_area()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_gross_floor_area' =>  "one"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_gross_floor_area"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_bedroom()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_bedroom' =>  "three"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_bedroom"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_bathroom()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_bathroom' =>  "four"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_bathroom"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_livingroom()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_livingroom' =>  "one"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_livingroom"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_floor()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_floor' =>  "two"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_floor"]);
+    }
+    
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_storey()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_storey' =>  "one"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_storey"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_car_parking()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_car_parking' =>  "four"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_car_parking"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_motor_parking()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_motor_parking' =>  "one"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_motor_parking"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_cost_estimates()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        // $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_cost_estimates' =>  "forty"
+        ])->toArray();
+
+        $property = array_merge($property,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_cost_estimates"]);
+    }
+
+     /** @test */
+     public function can_not_create_property_with_notNumber_unit_useful_life()
+     {
+         $property = factory(Property::class)->make()->toArray();
+        //  $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+ 
+         $unit=factory(Unit::class)->make([
+             'unit_usefull_life' =>  "one hundred"
+         ])->toArray();
+ 
+         $property = array_merge($property,$unit);
+ 
+         $this->response = $this->json(
+             'POST',
+             '/api/properties', $property
+         );
+ 
+         $this->assertErrorValidation(["unit_usefull_life"]);
+     }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_effective_age()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_effective_age' =>  "ninety nine"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_effective_age"]);
+    }
+
+    /** @test */
+    public function can_not_create_property_with_notNumber_unit_completion_year()
+    {
+        $property = factory(Property::class)->make()->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make([
+            'unit_completion_year' =>  "fifty"
+        ])->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
+
+        $this->response = $this->json(
+            'POST',
+            '/api/properties', $property
+        );
+
+        $this->assertErrorValidation(["unit_completion_year"]);
+    }
+    
 
     /**
      * @test
@@ -221,6 +598,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_price_asking' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -238,6 +620,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_price_asking_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -253,6 +640,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_price' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -268,6 +660,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_price_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -283,6 +680,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_list_price' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -298,6 +700,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_list_price_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -313,6 +720,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sold_price' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -328,6 +740,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sold_price_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -344,6 +761,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'sale_commission' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -359,6 +781,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_price_asking' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -374,6 +801,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_price_asking_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -389,6 +821,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_price' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -404,6 +841,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_price_per_sqm' => "ABC"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -419,6 +861,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_list_price' => "twenty"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -434,6 +881,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rent_list_price_per_sqm' => "twenty"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -449,6 +901,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rented_price' => "ten"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -464,6 +921,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rented_price_per_sqm' => "fifty five"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -479,6 +941,11 @@ class PropertyApiTest extends TestCase
         $property = factory(Property::class)->make([
             'rental_cmmission' => "six hundred"
         ])->toArray();
+        $titledeed=factory(PropertyTitleDeed::class)->make()->toArray();
+
+        $unit=factory(Unit::class)->make()->toArray();
+
+        $property = array_merge($property,$titledeed,$unit);
 
         $this->response = $this->json(
             'POST',
@@ -496,6 +963,7 @@ class PropertyApiTest extends TestCase
     public function test_update_property()
     {
         $property = factory(Property::class)->create();
+        $titleDeed = factory(PropertyTitleDeed::class)->create();
         $editedProperty = factory(Property::class)->make()->toArray();
 
         $this->response = $this->json(
