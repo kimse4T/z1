@@ -4,21 +4,43 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
+use Tests\Traits\LoginWithToken;
 use App\Models\Account;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Tests\Traits\LoginTrait;
+use App\User;
 
 class AccountApiTest extends TestCase
 {
-    use ApiTestTrait, WithoutMiddleware;
+    use ApiTestTrait, LoginWithToken;
+
+    public function setUp():void
+    {
+        parent::setUp();
+
+        //use as user that has login for access all api route
+        //can use without withHeader('Authorization',$this->token)
+        $user = factory(User::class)->create();
+        $this->actingAs($user, 'api');
+    }
 
     /**
      * @test
      */
     public function test_create_account()
     {
+        // $account = factory(Account::class)->make()->toArray();
+
+        // $this->response = $this->json(
+        //     'POST',
+        //     '/api/accounts', $account
+        // );
+
+        // $this->assertApiResponse($account);
 
         $account = factory(Account::class)->make()->toArray();
 
-        $this->response = $this->json(
+        $this->response = $this->withHeader('Authorization',$this->token)->json(
             'POST',
             '/api/accounts', $account
         );

@@ -38,6 +38,31 @@ class ContactCrudController extends CrudController
         if(request()->is_vip){
             $this->crud->addClause('where', 'is_vip', '=', '1');
         }
+        $this->setPermission();
+        $this->setRoles();
+    }
+
+    public function setRoles()
+    {
+        if(backpack_user()->hasRole('User'))
+        {
+            $this->crud->denyAccess(['create','delete','update','show','list']);
+        }
+    }
+
+    public function setPermission()
+    {
+        $this->crud->denyAccess(['create','delete','update']);
+
+        if(backpack_user()->hasPermissionTo('add contact')){
+            $this->crud->allowAccess(['create']);
+        }
+        if(backpack_user()->hasPermissionTo('update contact')){
+            $this->crud->allowAccess(['update']);
+        }
+        if(backpack_user()->hasPermissionTo('delete contact')){
+            $this->crud->allowAccess(['delete']);
+        }
     }
 
     /**
@@ -49,6 +74,7 @@ class ContactCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
+
 
         $this->crud->addColumn([
             'name'      => 'id',
@@ -119,6 +145,7 @@ class ContactCrudController extends CrudController
     {
         CRUD::setValidation(ContactRequest::class);
 
+        // dd(request());
         //CRUD::setFromDb(); // fields
 
         $this->crud->addField([   // CustomHTML
@@ -374,23 +401,20 @@ class ContactCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        dd(request());
+
         $this->setupCreateOperation();
     }
 
     public function store()
     {
-       //dd(json_decode(request()->map)->lat);
-
-    //    $lat = json_decode(request()->map)->lat;
-    //    $lng = json_decode(request()->map)->lng;
-
-
-    //     request()->merge([ 'longitude' => $lng,'latitude' => $lat]);
 
         $response = $this->traitStore();
 
         return $response;
     }
+
+
 
     public function contact(ContactRequest $request) {
         $term = $request->input('term');

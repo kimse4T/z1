@@ -33,7 +33,7 @@ class UpdatePropertyAPIRequest extends APIRequest
             'title_deed_no'  => 'sometimes|nullable|numeric',
             'issued_year'   => 'sometimes|nullable|numeric',
             'parcel_no' =>'sometimes|nullable|numeric',
-            'total_size_by_title_deed' => 'sometimes|nullable|numeric',
+            //'total_size_by_title_deed' => 'sometimes|nullable|numeric',
             'unit_name' => 'sometimes|nullable|string',
             'unit_width' => 'sometimes|nullable|numeric',
             'unit_length' => 'sometimes|nullable|numeric',

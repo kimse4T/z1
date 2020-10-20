@@ -44,7 +44,23 @@ class PropertyCrudController extends CrudController
         $this->crud->setShowView('properties.show');
         $this->propertyTitleDeedRepo = resolve(PropertyTitleDeedRepository::class);
         $this->unitRepo = resolve(UnitRepository::class);
+        $this->setPermission();
 
+    }
+
+    public function setPermission()
+    {
+        $this->crud->denyAccess(['create','delete','update']);
+
+        if(backpack_user()->hasPermissionTo('add property')){
+            $this->crud->allowAccess(['create']);
+        }
+        if(backpack_user()->hasPermissionTo('edit property')){
+            $this->crud->allowAccess(['update']);
+        }
+        if(backpack_user()->hasPermissionTo('delete property')){
+            $this->crud->allowAccess(['delete']);
+        }
     }
 
     /**

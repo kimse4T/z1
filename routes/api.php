@@ -18,17 +18,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::put('/property/status/{id}','Admin\PropertyCrudController@updateStatus');
+Route::middleware('auth:api')->group(function(){
 
-Route::put('/property/indication/{id}','Admin\PropertyCrudController@updateIndication');
+    Route::put('/property/status/{id}','Admin\PropertyCrudController@updateStatus');
 
-Route::post('/property/task/','Admin\Tasks_activityCrudController@storeFromProperty');
+    Route::put('/property/indication/{id}','Admin\PropertyCrudController@updateIndication');
 
-Route::post('/listing/create/{id}','Admin\ListingCrudController@store');
+    Route::post('/property/task/','Admin\Tasks_activityCrudController@storeFromProperty');
 
-Route::resource('accounts', 'API\AccountAPIController');
+    Route::post('/listing/create/{id}','Admin\ListingCrudController@store');
 
-Route::resource('contacts', 'API\ContactAPIController');
+    Route::resource('accounts', 'API\AccountAPIController');
 
+    Route::resource('contacts', 'API\ContactAPIController');
 
-Route::resource('properties', 'API\PropertyAPIController');
+    Route::resource('properties', 'API\PropertyAPIController');
+});
+
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', 'AuthApiController@login')->name('login');
+    Route::post('signup', 'AuthApiController@signup');
+});

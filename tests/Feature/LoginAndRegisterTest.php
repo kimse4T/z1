@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Tests\Traits\LoginTrait;
 
-class LoginTest extends TestCase
+class LoginAndRegisterTest extends TestCase
 {
     use RefreshDatabase;
     use LoginTrait;
@@ -27,22 +27,45 @@ class LoginTest extends TestCase
         ]);
     }
 
-
     /** @test */
-    // public function it_can_login()
+    // public function it_can_register()
     // {
+    //     $this->user = factory(User::class)->make([
+    //         'password' => Hash::make($this->password='123456789'),
+    //     ]);
+
+    //     dd($this->password);
+
+    //     $this->post('/admin/register',[
+    //         'name'  => $this->user->name,
+    //         'email' => $this->user->email,
+    //         'password' => $this->password,
+    //         'password_confirmation' => $this->password
+    //     ]);
+
     //     $response = $this->post('/admin/login',[
     //         'email' => $this->user->email,
     //         'password' => $this->password,
     //     ]);
 
-    //     $response->assertRedirect('/admin/dashboard');
-
-    //     $response->assertStatus(302);
-
-    //     $this->assertAuthenticatedAs($this->user);
-
+    //     $response->assertSee('Dashboard');
     // }
+
+    /** @test */
+    public function it_can_login()
+    {
+        $response = $this->post('/admin/login',[
+            'email' => $this->user->email,
+            'password' => $this->password,
+        ]);
+
+        $response->assertRedirect('/admin/dashboard');
+
+        $response->assertStatus(302);
+
+        $this->assertAuthenticatedAs($this->user);
+
+    }
 
     /** @test */
     public function it_can_not_login_with_incorrect_email()

@@ -25,6 +25,7 @@ class ContactRequest extends FormRequest
      */
     public function rules()
     {
+        // dd(request());
         return $this->apiRules();
     }
 
@@ -35,7 +36,9 @@ class ContactRequest extends FormRequest
             'last_name'  => 'required|regex:/^[a-zA-Z]+$/u|min:2|max:30',
             'salutation' => 'required',
             'type'       => 'required|regex:/^[a-zA-Z]+$/u',
-            'phone'      => 'required|numeric'
+            'phone'      => 'required',
+            'email'      => 'sometimes|nullable|email',
+            'identity_card' => 'sometimes|nullable|numeric'
         ];
     }
 

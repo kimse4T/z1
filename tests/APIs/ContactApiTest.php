@@ -5,10 +5,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Contact;
+use App\User;
 
 class ContactApiTest extends TestCase
 {
      use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
+
+     public function setUp():void
+     {
+         parent::setUp();
+
+         //use as user that has login for access all api route
+         //can use without withHeader('Authorization',$this->token)
+         $user = factory(User::class)->create();
+         $this->actingAs($user, 'api');
+     }
 
     /**
      * @test
@@ -17,7 +28,7 @@ class ContactApiTest extends TestCase
     {
         $contact = factory(Contact::class)->make()->toArray();
 
-        dd($contact);
+        //dd($contact);
 
         $this->response = $this->json(
             'POST',
