@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\UserUpdateCrudRequest as UpdateRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\PermissionTrait;
 
 class UserCrudController extends CrudController
 {
@@ -13,21 +14,14 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use PermissionTrait;
 
     public function setup()
     {
         $this->crud->setModel(config('backpack.permissionmanager.models.user'));
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
         $this->crud->setRoute(backpack_url('user'));
-        $this->setRoles();
-    }
-
-    public function setRoles()
-    {
-        if(backpack_user()->hasRole('User')||backpack_user()->hasRole('Manager'))
-        {
-            $this->crud->denyAccess(['create','delete','update','show','list']);
-        }
+        $this->setPermission($this->crud,'user');
     }
 
     public function setupListOperation()

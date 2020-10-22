@@ -10,7 +10,7 @@ use Tests\Traits\ViewTrait;
 
 class AccountTest extends TestCase
 {
-    use ViewTrait;
+    // use ViewTrait;
 
     private $resUser,$response;
 

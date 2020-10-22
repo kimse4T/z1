@@ -30,12 +30,16 @@ class PropertyTitleDeedRepository
             foreach($title_deed_arr as $title_deed){
                 $title = new $this->model();
                 $title->property_id=$property_id;
+
                 $title->title_deed_type=$title_deed->title_deed_type;
                 $title->title_deed_no=$title_deed->title_deed_no;
                 $title->issued_year=$title_deed->issued_year;
+
                 $title->parcel_no=$title_deed->parcel_no;
-                $title->image=$title_deed->title_deed_image;
+                $title->image=$title_deed->image;
+
                 $title->save();
+
             };
         }else{
             //dd($title_deed_arr->title_deed_type);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\AccountRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Traits\PermissionTrait;
 
 /**
  * Class AccountCrudController
@@ -18,6 +19,7 @@ class AccountCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use PermissionTrait;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -32,6 +34,7 @@ class AccountCrudController extends CrudController
         $this->crud->setCreateView('accounts.create');
         $this->crud->setEditView('accounts.edit');
         $this->crud->setShowView('accounts.show');
+        $this->setPermission($this->crud,'account');
     }
 
     /**

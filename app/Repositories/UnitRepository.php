@@ -89,7 +89,6 @@ class UnitRepository
 
     }
 
-
     // update record in the database
     public function update($request,$id)
     {
@@ -164,7 +163,6 @@ class UnitRepository
                         $unit->style=$request->unit_style[$index];
                         $unit->save();
                     }
-
                 }else{
                     $unit = new $this->model();
                     $unit->property_id= $this->model->find($id[0])->property_id;

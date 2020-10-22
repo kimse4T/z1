@@ -1,6 +1,6 @@
 <!-- This file is used to store sidebar items, starting with Backpack\Base 0.9.0 -->
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
-@if(backpack_user()->hasRole('Developer')||backpack_user()->hasRole('Manager'))
+@if(backpack_user()->hasRole('Admin')||backpack_user()->hasRole('Editor'))
 <li class="nav-item nav-dropdown"><a class="nav-link nav-dropdown-toggle" href='#'><i class="nav-icon la la-user"></i> Contacts</a>
     <ul class="nav-dropdown-items">
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contact') }}'><i class="nav-icon la la-user"></i> Contact Lists</a></li>
@@ -9,7 +9,7 @@
     </ul>
 </li>
 @endif
-@if(backpack_user()->hasRole('User')||backpack_user()->hasRole('Manager')||backpack_user()->hasRole('Developer'))
+@if(backpack_user()->hasRole('User')||backpack_user()->hasRole('Editor')||backpack_user()->hasRole('Admin'))
 <li class="nav-item nav-dropdown"><a class="nav-link nav-dropdown-toggle" href='#'><i class="nav-icon la la-home"></i> Properties</a>
     <ul class="nav-dropdown-items">
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('property') }}'><i class="nav-icon la la-list-alt"></i> Property Lists</a></li>
@@ -21,7 +21,7 @@
 </li>
 @endif
 
-@if(backpack_user()->hasRole('Developer'))
+@if(backpack_user()->hasRole('Admin'))
 <!-- Users, Roles, Permissions -->
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-users"></i> Authentication</a>

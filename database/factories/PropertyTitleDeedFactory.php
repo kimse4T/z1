@@ -12,6 +12,7 @@ $factory->define(PropertyTitleDeed::class, function (Faker $faker) {
         'title_deed_no'  => $faker->numberBetween($min = 10, $max = 10000),
         'issued_year'   => $faker->numberBetween($min = 10, $max = 10000),
         'parcel_no' =>$faker->numberBetween($min = 10, $max = 10000),
+        'image' => '',
         //'total_size_by_title_deed' => $faker->numberBetween($min = 10, $max = 10000),
     ];
 });

@@ -5,6 +5,7 @@ namespace Backpack\PermissionManager\app\Http\Controllers;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\PermissionManager\app\Http\Requests\RoleStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\RoleUpdateCrudRequest as UpdateRequest;
+use App\Traits\PermissionTrait;
 
 // VALIDATION
 
@@ -14,6 +15,7 @@ class RoleCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use PermissionTrait;
 
     public function setup()
     {
@@ -34,16 +36,10 @@ class RoleCrudController extends CrudController
         if (config('backpack.permissionmanager.allow_role_delete') == false) {
             $this->crud->denyAccess('delete');
         }
-        $this->setRoles();
+
+        $this->setPermission($this->crud,'role');
     }
 
-    public function setRoles()
-    {
-        if(backpack_user()->hasRole('User')||backpack_user()->hasRole('Manager'))
-        {
-            $this->crud->denyAccess(['create','delete','update','show','list']);
-        }
-    }
 
     public function setupListOperation()
     {

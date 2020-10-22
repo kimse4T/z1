@@ -14,7 +14,7 @@ use Tests\Traits\ViewTrait;
 
 class ContactTest extends TestCase
 {
-    use ViewTrait;
+    // use ViewTrait;
 
     private $resUser,$response;
 
@@ -159,7 +159,6 @@ class ContactTest extends TestCase
     /** @test */
     public function backpack_it_can_update_contact()
     {
-
         $contact = factory(Contact::class)->create();
 
         $this->get('/admin/contact/'.$contact->id.'/edit')
@@ -167,7 +166,9 @@ class ContactTest extends TestCase
              ->assertSee($contact->last_name)
              ->assertSee($contact->phone);
 
-         $editcontact = factory(Contact::class)->make();
+        $editcontact = factory(Contact::class)->make([
+            'id'    => $contact->id,
+        ]);
 
         $this->response = $this->PUT('/admin/contact/'.$contact->id,$editcontact->toArray());
 

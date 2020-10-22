@@ -6,6 +6,7 @@ use App\Http\Requests\ContactRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Contact;
+use App\Traits\PermissionTrait;
 
 /**
  * Class ContactCrudController
@@ -21,6 +22,7 @@ class ContactCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
+    use PermissionTrait;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -38,31 +40,8 @@ class ContactCrudController extends CrudController
         if(request()->is_vip){
             $this->crud->addClause('where', 'is_vip', '=', '1');
         }
-        $this->setPermission();
-        $this->setRoles();
-    }
+        $this->setPermission($this->crud,'contact');
 
-    public function setRoles()
-    {
-        if(backpack_user()->hasRole('User'))
-        {
-            $this->crud->denyAccess(['create','delete','update','show','list']);
-        }
-    }
-
-    public function setPermission()
-    {
-        $this->crud->denyAccess(['create','delete','update']);
-
-        if(backpack_user()->hasPermissionTo('add contact')){
-            $this->crud->allowAccess(['create']);
-        }
-        if(backpack_user()->hasPermissionTo('update contact')){
-            $this->crud->allowAccess(['update']);
-        }
-        if(backpack_user()->hasPermissionTo('delete contact')){
-            $this->crud->allowAccess(['delete']);
-        }
     }
 
     /**
@@ -401,8 +380,6 @@ class ContactCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        dd(request());
-
         $this->setupCreateOperation();
     }
 

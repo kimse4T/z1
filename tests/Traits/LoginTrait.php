@@ -1,8 +1,11 @@
 <?php
 
 namespace Tests\Traits;
+
+use Illuminate\Support\Facades\Hash;
+
 trait LoginTrait{
-    
+
     protected $response;
 
     function assertLoginFailed($response)
@@ -12,4 +15,6 @@ trait LoginTrait{
         $this->assertFalse(session()->hasOldInput('password'));
         $response->assertRedirect('/admin/login');
     }
+
+
 }

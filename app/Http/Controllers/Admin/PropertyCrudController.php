@@ -11,6 +11,7 @@ use App\Repositories\PropertyTitleDeedRepository;
 use App\Repositories\UnitRepository;
 use GuzzleHttp\Psr7\Request;
 use Prologue\Alerts\Facades\Alert;
+use App\Traits\PermissionTrait;
 
 /**
  * Class PropertyCrudController
@@ -25,6 +26,7 @@ class PropertyCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
+    use PermissionTrait;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -44,24 +46,11 @@ class PropertyCrudController extends CrudController
         $this->crud->setShowView('properties.show');
         $this->propertyTitleDeedRepo = resolve(PropertyTitleDeedRepository::class);
         $this->unitRepo = resolve(UnitRepository::class);
-        $this->setPermission();
+        $this->setPermission($this->crud,'property');
 
     }
 
-    public function setPermission()
-    {
-        $this->crud->denyAccess(['create','delete','update']);
 
-        if(backpack_user()->hasPermissionTo('add property')){
-            $this->crud->allowAccess(['create']);
-        }
-        if(backpack_user()->hasPermissionTo('edit property')){
-            $this->crud->allowAccess(['update']);
-        }
-        if(backpack_user()->hasPermissionTo('delete property')){
-            $this->crud->allowAccess(['delete']);
-        }
-    }
 
     /**
      * Define what happens when the List operation is loaded.
@@ -586,7 +575,7 @@ class PropertyCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
-                    'name'  => 'title_deed_image',
+                    'name'  => 'image',
                     'label' => 'Upload Title Deed Photos',
                     'type'  => 'image',
                     'wrapperAttributes' => [
@@ -781,7 +770,6 @@ class PropertyCrudController extends CrudController
 
     public function update()
     {
-        //dd(request());
         $status=Property::find(request()->id)->status;
         if($status=='Listing'){
             \Alert::add('error', 'You can not update this Property because it is in Listing')->flash();
@@ -810,14 +798,13 @@ class PropertyCrudController extends CrudController
 
     public function store()
     {
-        //dd(request());
         $this->priceAndCommission();
         $respone = $this->traitStore();
         $pro=Property::find($this->crud->entry->id);
         $pro->status='Draft';
         $pro->save();
-        $this->propertyTitleDeedRepo->create(request()->propertyTitleDeedRepeatable,$this->crud->entry->id);
         $this->unitRepo->create(request(),$this->crud->entry->id);
+        $this->propertyTitleDeedRepo->create(request()->propertyTitleDeedRepeatable,$this->crud->entry->id);
         return $respone;
     }
 
