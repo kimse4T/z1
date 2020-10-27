@@ -99,20 +99,6 @@ trait ViewTestTrait{
         $this->response->assertStatus(404);
     }
 
-    function loginAs($role)
-    {
-        $user = factory(User::class)->create(
-            ['password' => Hash::make('123456789')]
-        )->assignRole($role);
-
-        $userLogin=$this->post('/admin/login',[
-            'email' => $user->email,
-            'password' => '123456789',
-        ]);
-
-        return $userLogin;
-    }
-
     function loginAsDev()
     {
         $userLogin=$this->post('/admin/login',[

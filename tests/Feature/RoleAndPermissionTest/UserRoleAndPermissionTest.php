@@ -1,25 +1,21 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\RoleAndPermissionTest;
 
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Property;
 use App\PropertyTitleDeed;
 use App\Unit;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
-use Tests\Traits\ViewTrait;
 use Tests\TestCase;
+use Tests\Traits\RoleAndPermissionTrait;
 use App\User;
 use Backpack\PermissionManager\app\Models\Role as ModelsRole;
 use Backpack\PermissionManager\app\Models\Permission;
-use DeepCopy\Exception\PropertyException;
 
-class AccountRoleAndPermissionTest extends TestCase
+class UserRoleAndPermissionTest extends TestCase
 {
-    // use ViewTrait;
+    use RoleAndPermissionTrait;
 
     private $response,$user;
 
@@ -30,7 +26,7 @@ class AccountRoleAndPermissionTest extends TestCase
         $this->loginAs('user');
     }
 
-    // WHAT USER OF ANY ROLES SEE WHEN LOGIN //
+    // WHAT USER SEE WHEN LOGIN //
 
     /** @test */
     public function what_user_can_see()
@@ -150,13 +146,13 @@ class AccountRoleAndPermissionTest extends TestCase
     }
 
     /** @test */
-    public function user_can_not_create_user()
-    {
-        $user = factory(User::class)->make();
+    // public function user_can_not_create_user()
+    // {
+    //     $user = factory(User::class)->make();
 
-        $this->post('/admin/user',$user->toArray())
-             ->assertStatus(403);
-    }
+    //     $this->post('/admin/user',$user->toArray())
+    //          ->assertStatus(403);
+    // }
 
     /** @test */
     public function user_can_not_update_user()
@@ -287,21 +283,36 @@ class AccountRoleAndPermissionTest extends TestCase
     {
         $property = $this->createProperty();
         $id = Property::latest()->first()->id;
-
+        $unit_id=[Unit::latest()->first()->id];
+        $titledeed_id = PropertyTitleDeed::latest()->first()->id;
 
         $property = factory(Property::class)->make()->toArray();
         $titledeed = factory(PropertyTitleDeed::class)->make();
         $unit = factory(Unit::class)->make()->toArray();
 
-        $titledeed = json_encode([$titledeed->toArray()]);
-        $property['propertyTitleDeedRepeatable']=$titledeed;
+        $titledeed = $titledeed->toArray();
+        $titledeed['id'] = $titledeed_id;
+        $titledeed['title_deed_image']=null;
 
+        $titledeed = json_encode([$titledeed]);
+        $property['propertyTitleDeedRepeatable']=$titledeed;
         $property = array_merge($property,$unit);
 
         $property['id']=$id;
+        $property['unit_id']=$unit_id;
 
         $this->put('/admin/property/'.$id,$property)
              ->assertStatus(302);
+    }
+
+    /** @test */
+    public function user_can_delete_property()
+    {
+        $property = $this->createProperty();
+        $id = Property::latest()->first()->id;
+
+        $this->delete('/admin/property/'.$id)
+             ->assertStatus(200);
     }
 
 
@@ -319,11 +330,10 @@ class AccountRoleAndPermissionTest extends TestCase
 
         $titledeed = json_encode([$titledeed->toArray()]);
         $property['propertyTitleDeedRepeatable']=$titledeed;
-
         $property = array_merge($property,$unit);
 
-        $this->post('/admin/property',$property)
-             ->assertRedirect('/admin/property');
+        $this->post('/admin/property',$property);
+
         return $property;
     }
 }

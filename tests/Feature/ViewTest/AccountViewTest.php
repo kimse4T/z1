@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\ViewTest;
 
 use App\Models\Account;
 use Tests\Traits\ViewTestTrait;
