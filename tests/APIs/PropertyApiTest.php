@@ -87,7 +87,6 @@ class PropertyApiTest extends TestCase
 
         $property = array_merge($property,$titledeed,$unit);
 
-
         $this->response = $this->json(
             'POST',
             '/api/properties', $property

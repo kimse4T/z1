@@ -3,55 +3,19 @@
 namespace Tests\Feature\ControllerTest;
 
 use App\Models\Account;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\Traits\ViewTrait;
+use Tests\Traits\ControllerTestTrait;
 
 class AccountTest extends TestCase
 {
-    // use ViewTrait;
+    use ControllerTestTrait;
 
-    private $resUser,$response;
+    private $email = 'dev@dev.com';
+    private $password = '123456789';
+    private $entity = 'account';
+    private $model = Account::class;
+    private $not_null_fields = ['name','email','phone','industry'];
+    private $is_email_fields = ['email'];
+    private $only_number_fields = ['phone'];
 
-    public function setUp():void
-    {
-        parent::setUp();
-
-        $this->resUser = $this->post('/admin/login',[
-            'email' => 'dev@dev.com',
-            'password' => '123456789',
-        ]);
-
-    }
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
-    /** @test */
-    public function backpack_it_can_update_account()
-    {
-
-        $account = factory(Account::class)->create();
-
-        $this->get('/admin/account/'.$account->id.'/edit')
-             ->assertSee($account->name)
-             ->assertSee($account->phone);
-
-        $editaccount = factory(Account::class)->make();
-
-        $this->response = $this->PUT('/admin/account/'.$account->id,$editaccount->toArray());
-
-        dd($this->response);
-
-        $this->response->assertRedirect('/admin/account');
-    }
 }

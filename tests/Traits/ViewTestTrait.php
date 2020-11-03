@@ -2,9 +2,6 @@
 
 namespace Tests\Traits;
 
-use Illuminate\Support\Facades\Hash;
-use App\User;
-
 trait ViewTestTrait{
 
     public function setUp():void

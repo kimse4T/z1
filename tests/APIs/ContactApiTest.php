@@ -9,7 +9,7 @@ use App\User;
 
 class ContactApiTest extends TestCase
 {
-     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
+     use ApiTestTrait;
 
      public function setUp():void
      {
@@ -221,21 +221,6 @@ class ContactApiTest extends TestCase
         $this->assertErrorValidation(["phone"]);
     }
 
-    /** @test */
-    function it_can_not_create_contact_with_notNumber_phone()
-    {
-        $contact = factory(Contact::class)->make(
-            ["phone"  => 'ABCD']
-        );
-
-        $this->response = $this->json(
-            'POST',
-            '/api/contacts',$contact->toArray()
-        );
-
-        $this->assertErrorValidation(["phone"]);
-    }
-
 
     /**
      * @test
@@ -389,22 +374,6 @@ class ContactApiTest extends TestCase
         $contact = factory(Contact::class)->create();
         $editedContact = factory(Contact::class)->make([
             'phone'  =>  null
-        ])->toArray();
-
-        $this->response = $this->json(
-            'PUT',
-            '/api/contacts/'.$contact->id,$editedContact
-        );
-
-        $this->assertErrorValidation(['phone']);
-    }
-
-    /** @test */
-    function can_not_update_contact_with_notNumber_phone()
-    {
-        $contact = factory(Contact::class)->create();
-        $editedContact = factory(Contact::class)->make([
-            'phone'  =>  'ABC'
         ])->toArray();
 
         $this->response = $this->json(

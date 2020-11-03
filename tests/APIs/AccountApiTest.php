@@ -12,7 +12,7 @@ use App\User;
 
 class AccountApiTest extends TestCase
 {
-    use ApiTestTrait, LoginWithToken;
+    use ApiTestTrait;
 
     public function setUp():void
     {
@@ -27,25 +27,25 @@ class AccountApiTest extends TestCase
     /**
      * @test
      */
-    public function test_create_account()
+    public function create_account()
     {
-        // $account = factory(Account::class)->make()->toArray();
-
-        // $this->response = $this->json(
-        //     'POST',
-        //     '/api/accounts', $account
-        // );
-
-        // $this->assertApiResponse($account);
-
         $account = factory(Account::class)->make()->toArray();
 
-        $this->response = $this->withHeader('Authorization',$this->token)->json(
+        $this->response = $this->json(
             'POST',
             '/api/accounts', $account
         );
 
         $this->assertApiResponse($account);
+
+        // $account = factory(Account::class)->make()->toArray();
+
+        // $this->response = $this->withHeader('Authorization',$this->token)->json(
+        //     'POST',
+        //     '/api/accounts', $account
+        // );
+
+        // $this->assertApiResponse($account);
     }
 
     /**
