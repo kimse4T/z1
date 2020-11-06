@@ -26,9 +26,9 @@ trait ControllerTestTrait{
     /** @test */
     public function show()
     {
-        $data = factory($this->model)->create();
+        $data = $this->createModel();
 
-        $this->response = $this->get('/admin/'.$this->entity.'/'.$data->id.'/show');
+        $this->response = $this->get('/admin/'.$this->entity.'/'.$data['id'].'/show');
 
         $this->response->assertStatus(200);
     }
@@ -36,9 +36,9 @@ trait ControllerTestTrait{
     /** @test */
     public function created()
     {
-        $data = factory($this->model)->make();
+        $data = $this->makeModel();
 
-        $this->response = $this->post('/admin/'.$this->entity,$data->toArray());
+        $this->response = $this->post('/admin/'.$this->entity,$data);
 
         $this->response->assertStatus(302);
     }
@@ -46,13 +46,33 @@ trait ControllerTestTrait{
     /** @test */
     public function updated()
     {
-        $data = factory($this->model)->create();
+        $data = $this->createModel();
 
-        $editData = factory($this->model)->make([
-            'id'    => $data->id,
-        ]);
+        $editData = $this->makeModel(['id' => $data['id']]);
 
-        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$data->id,$editData->toArray());
+        if(isset($this->other_table_as_json))
+        {
+            $jsonid = $this->getLastRecord($this->other_table_as_json)->id;
+
+            $other_as_json = factory($this->other_table_as_json)->make()->toArray();
+
+            $other_as_json['id'] = $jsonid;
+
+            $other_as_json['title_deed_image']=null;
+
+            $other_as_json = json_encode([$other_as_json]);
+
+            $editData[$this->jsonFieldName] = $other_as_json;
+        }
+
+        if(isset($this->other_table_as_array))
+        {
+            $arrayid = [$this->getLastRecord($this->other_table_as_array)->id];
+
+            $editData[$this->arrayIdField] = $arrayid;
+        }
+
+        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$data['id'],$editData);
 
         $this->response->assertStatus(302);
     }
@@ -60,9 +80,9 @@ trait ControllerTestTrait{
     /** @test */
     public function deleted()
     {
-        $data = factory($this->model)->create();
+        $data = $this->createModel();
 
-        $this->response = $this->delete('/admin/'.$this->entity.'/'.$data->id);
+        $this->response = $this->delete('/admin/'.$this->entity.'/'.$data['id']);
 
         $this->response->assertStatus(200);
     }
@@ -84,7 +104,7 @@ trait ControllerTestTrait{
 
         //create
 
-        $data = factory($this->model)->make($null_data)->toArray();
+        $data = $this->makeModel($null_data);
 
         $this->response = $this->post('/admin/'.$this->entity,$data);
 
@@ -92,11 +112,11 @@ trait ControllerTestTrait{
 
         //update
 
-        $dataUpdate = factory($this->model)->create();
+        $dataUpdate = $this->createModel();
 
-        $data['id'] = $dataUpdate->id;
+        $data['id'] = $dataUpdate['id'];
 
-        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate->id,$data);
+        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate['id'],$data);
 
         $this->response->assertSessionHasErrors($this->not_null_fields);
     }
@@ -118,7 +138,7 @@ trait ControllerTestTrait{
             $email_data[$item] = 'notEmail';
         }
 
-        $data = factory($this->model)->make($email_data)->toArray();
+        $data = $this->makeModel($email_data);
 
         $this->response = $this->post('/admin/'.$this->entity,$data);
 
@@ -126,11 +146,11 @@ trait ControllerTestTrait{
 
         //update
 
-        $dataUpdate = factory($this->model)->create();
+        $dataUpdate = $this->createModel();
 
-        $data['id'] = $dataUpdate->id;
+        $data['id'] = $dataUpdate['id'];
 
-        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate->id,$data);
+        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate['id'],$data);
 
         $this->response->assertSessionHasErrors($this->is_email_fields);
 
@@ -153,7 +173,7 @@ trait ControllerTestTrait{
 
         //create
 
-        $data = factory($this->model)->make($only_string_data)->toArray();
+        $data = $this->makeModel($only_string_data);
 
         $this->response = $this->post('/admin/'.$this->entity,$data);
 
@@ -161,11 +181,11 @@ trait ControllerTestTrait{
 
         //update
 
-        $dataUpdate = factory($this->model)->create();
+        $dataUpdate = $this->createModel();
 
-        $data['id'] = $dataUpdate->id;
+        $data['id'] = $dataUpdate['id'];
 
-        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate->id,$data);
+        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate['id'],$data);
 
         $this->response->assertSessionHasErrors($this->only_string_fields);
     }
@@ -187,7 +207,7 @@ trait ControllerTestTrait{
 
         //create
 
-        $data = factory($this->model)->make($only_number_data)->toArray();
+        $data = $this->makeModel($only_number_data);
 
         $this->response = $this->post('/admin/'.$this->entity,$data);
 
@@ -195,13 +215,53 @@ trait ControllerTestTrait{
 
         //update
 
-        $dataUpdate = factory($this->model)->create();
+        $dataUpdate = $this->createModel();
 
-        $data['id'] = $dataUpdate->id;
+        $data['id'] = $dataUpdate['id'];
 
-        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate->id,$data);
+        $this->response = $this->PUT('/admin/'.$this->entity.'/'.$dataUpdate['id'],$data);
 
         $this->response->assertSessionHasErrors($this->only_number_fields);
+    }
+
+    function makeModel($fields=null)
+    {
+        if($fields == null)
+        {
+            $fields = [];
+        }
+        $data = factory($this->model)->make($fields)->toArray();
+
+        if(isset($this->other_table_as_array))
+        {
+            $other_as_array = factory($this->other_table_as_array)->make($fields)->toArray();
+
+            $data = array_merge($data,$other_as_array);
+        }
+
+        if(isset($this->other_table_as_json))
+        {
+            $other_as_json = factory($this->other_table_as_json)->make($fields);
+
+            $other_as_json = json_encode([$other_as_json->toArray()]);
+
+            $data[$this->jsonFieldName] = $other_as_json;
+        }
+
+        return $data;
+    }
+
+    function createModel()
+    {
+        $data = $this->makeModel();
+
+        $this->post('/admin/'.$this->entity,$data);
+
+        $id = $this->getLastRecord($this->model)->id;
+
+        $data['id'] = $id;
+
+        return $data;
     }
 
     function assertViewSee($keys=[])

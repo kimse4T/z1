@@ -17,5 +17,4 @@ class AccountTest extends TestCase
     private $not_null_fields = ['name','email','phone','industry'];
     private $is_email_fields = ['email'];
     private $only_number_fields = ['phone'];
-
 }
