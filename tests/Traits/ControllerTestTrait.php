@@ -21,6 +21,8 @@ trait ControllerTestTrait{
         $this->response = $this->get('/admin/'.$this->entity);
 
         $this->response->assertStatus(200);
+
+        //$this->response->assertViewIs($this->viewList);
     }
 
     /** @test */
@@ -31,6 +33,8 @@ trait ControllerTestTrait{
         $this->response = $this->get('/admin/'.$this->entity.'/'.$data['id'].'/show');
 
         $this->response->assertStatus(200);
+
+       // $this->response->assertviewIs($this->viewShow);
     }
 
     /** @test */
@@ -85,6 +89,15 @@ trait ControllerTestTrait{
         $this->response = $this->delete('/admin/'.$this->entity.'/'.$data['id']);
 
         $this->response->assertStatus(200);
+    }
+
+    /** @test */
+    public function create_or_update_withvalidation_field()
+    {
+        if(1==true)
+        {
+            $this->create_or_update_with_not_null_fields();
+        }
     }
 
     /** @test */

@@ -798,6 +798,7 @@ class PropertyCrudController extends CrudController
 
     public function store()
     {
+        //dd(request());
         $this->priceAndCommission();
         $respone = $this->traitStore();
         $pro=Property::find($this->crud->entry->id);
