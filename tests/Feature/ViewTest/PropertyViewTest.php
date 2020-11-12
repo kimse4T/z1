@@ -12,7 +12,7 @@ class PropertyViewTest extends TestCase
 
     protected $routeList = 'property.index';
     protected $routeShow = 'property.show';
-    protected $modelName = Property::class;
+    protected $model = Property::class;
     protected $viewList = 'crud::list';
     protected $viewShow = 'properties.show';
     protected $email = 'dev@dev.com';

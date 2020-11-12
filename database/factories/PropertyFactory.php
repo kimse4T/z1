@@ -30,8 +30,8 @@ $factory->define(Property::class, function (Faker $faker) {
         'rented_price'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rented_price_per_sqm'  =>$faker->numberBetween($min = 10, $max = 1000),
         'rental_cmmission'  =>$faker->numberBetween($min = 10, $max = 1000),
-        'created_at' => $faker->date('Y-m-d H:i:s'),
-        'updated_at' => $faker->date('Y-m-d H:i:s'),
+        //'created_at' => $faker->date('Y-m-d H:i:s'),
+        //'updated_at' => $faker->date('Y-m-d H:i:s'),
 
 
 

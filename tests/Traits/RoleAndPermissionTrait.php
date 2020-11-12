@@ -2,7 +2,6 @@
 
 namespace Tests\Traits;
 
-use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Models\Account;
 use App\Models\Contact;
@@ -11,15 +10,15 @@ use App\PropertyTitleDeed;
 use App\Unit;
 use Backpack\PermissionManager\app\Models\Role as ModelsRole;
 use Backpack\PermissionManager\app\Models\Permission;
+use Tests\Traits\TestTrait;
 
 trait RoleAndPermissionTrait{
 
-    private $response,$user;
+    use TestTrait;
 
     public function setUp():void
     {
         parent::setUp();
-
         $this->loginAs($this->role);
     }
 
@@ -31,13 +30,11 @@ trait RoleAndPermissionTrait{
         if(backpack_user()->hasRole('User'))
         {
             $this->assertViewSee(['Dashboard','Properties']);
-
             $this->assertViewNotSee(['Contacts','Authentication']);
         }
         elseif(backpack_user()->hasRole('Editor'))
         {
             $this->assertViewSee(['Dashboard','Properties','Contacts']);
-
             $this->assertViewNotSee(['Authentication']);
         }
         else
@@ -59,7 +56,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -76,7 +73,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -93,7 +90,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -112,7 +109,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -129,7 +126,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -146,7 +143,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -163,7 +160,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -180,7 +177,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -199,7 +196,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -216,7 +213,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -233,7 +230,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -250,7 +247,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -265,7 +262,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -300,7 +297,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -318,7 +315,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -335,18 +332,27 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
     /** @test */
-    // public function user_can_not_create_user()
-    // {
-    //     $user = factory(User::class)->make();
+    /*
+    public function create_user()
+    {
+        $user = factory(User::class)->make();
 
-    //     $this->post('/admin/user',$user->toArray())
-    //          ->assertStatus(403);
-    // }
+        $this->response = $this->post('/admin/user',$user->toArray());
+
+        if(backpack_user()->hasPermissionTo('add user'))
+        {
+            $this->response->assertStatus(302);
+        }
+        else
+        {
+            $this->assertAccessDeny();
+        }
+    }*/
 
     /** @test */
     public function update_user()
@@ -363,7 +369,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -380,7 +386,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -397,7 +403,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -414,7 +420,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -431,7 +437,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -448,7 +454,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -465,7 +471,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -482,7 +488,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -499,7 +505,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -516,7 +522,7 @@ trait RoleAndPermissionTrait{
         }
         else
         {
-            $this->response->assertStatus(403);
+            $this->assertAccessDeny();
         }
     }
 
@@ -534,55 +540,5 @@ trait RoleAndPermissionTrait{
     }
 
 
-
-
-
-
-    function assertViewSee($keys=[])
-    {
-        foreach ($keys as $key)
-        {
-            $this->response->assertSee($key);
-        }
-    }
-
-    function assertViewNotSee($keys=[])
-    {
-        foreach ($keys as $key)
-        {
-            $this->response->assertDontSee($key);
-        }
-    }
-
-    function assertViewList($view)
-    {
-        $this->response->assertStatus(200)
-                       ->assertViewIs($view);
-    }
-
-    function assertViewShow($view)
-    {
-        $this->response->assertStatus(200)
-                       ->assertViewIs($view);
-    }
-
-    function assertViewNotFound()
-    {
-        $this->response->assertStatus(404);
-    }
-
-    function loginAs($role)
-    {
-        $user = factory(User::class)->create(
-            ['password' => Hash::make('123456789')]
-        )->assignRole($role);
-
-        $userLogin=$this->post('/admin/login',[
-            'email' => $user->email,
-            'password' => '123456789',
-        ]);
-
-        return $userLogin;
-    }
 }
 

@@ -2,119 +2,56 @@
 
 namespace Tests\Traits;
 
+use Tests\Traits\TestTrait;
+
 trait ViewTestTrait{
+
+    use TestTrait;
 
     public function setUp():void
     {
         parent::setUp();
-
         $this->loginAsDev();
     }
-
-    // Assign value
-
-    protected $response;
-
 
     //Run Test
 
     /** @test */
-    public function user_can_list_entity()
+    public function user_can_list_all_items()
     {
         $this->response = $this->get(route($this->routeList));
         $this->assertViewList($this->viewList);
     }
 
     /** @test */
-    public function user_can_show_entity_detail()
+    public function user_can_show_item_detail()
     {
-        $lastEntity = $this->getLastRecord($this->modelName);
+        $lastItem = $this->getLastRecord($this->model);
 
-        $this->response = $this->get(route($this->routeShow,['id'=>$lastEntity->id]));
-
+        $this->response = $this->get(route($this->routeShow,['id'=>$lastItem->id]));
         $this->assertViewShow($this->viewShow);
     }
 
     /** @test */
-    public function user_can_show_all_entity_details()
+    public function user_can_show_all_items_detail()
     {
-        $allEntities = $this->getAllRecord($this->modelName);
+        $allItems = $this->getAllRecord($this->model)->toArray();
 
-        $allEntities = $allEntities->toArray();
-
-        foreach($allEntities as $entity)
+        foreach($allItems as $item)
         {
-            $this->response = $this->get(route($this->routeShow,['id'=>$entity['id']]));
-
+            $this->response = $this->get(route($this->routeShow,['id'=>$item['id']]));
             $this->assertViewShow($this->viewShow);
         }
     }
 
     /** @test */
-    public function user_can_not_show_not_exist_entity()
+    public function user_can_not_show_not_exist_item()
     {
-        $lastEntity = $this->getLastRecord($this->modelName);
+        $lastItem = $this->getLastRecord($this->model);
+        $notExistItem = $lastItem->id + 1;
 
-        $notExistEntity = $lastEntity->id + 1;
-
-        $this->response = $this->get(route($this->routeShow,['id'=>$notExistEntity]));
-
+        $this->response = $this->get(route($this->routeShow,['id'=>$notExistItem]));
         $this->assertViewNotFound();
     }
-
-
-    function assertViewSee($keys=[])
-    {
-        foreach ($keys as $key)
-        {
-            $this->response->assertSee($key);
-        }
-    }
-
-    function assertViewNotSee($keys=[])
-    {
-        foreach ($keys as $key)
-        {
-            $this->response->assertDontSee($key);
-        }
-    }
-
-    function assertViewList($view)
-    {
-        $this->response->assertStatus(200)
-                       ->assertViewIs($view);
-    }
-
-    function assertViewShow($view)
-    {
-        $this->response->assertStatus(200)
-                       ->assertViewIs($view);
-    }
-
-    function assertViewNotFound()
-    {
-        $this->response->assertStatus(404);
-    }
-
-    function loginAsDev()
-    {
-        $userLogin=$this->post('/admin/login',[
-            'email' => $this->email,
-            'password'  => $this->password,
-        ]);
-
-        return $userLogin;
-    }
-
-    function getLastRecord($model)
-    {
-        return $model::orderBy('id','desc')->first();
-    }
-
-    function getAllRecord($model)
-    {
-        return $model::all();
-    }
-
 }
 

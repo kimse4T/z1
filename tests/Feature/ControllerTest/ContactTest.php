@@ -15,8 +15,19 @@ class ContactTest extends TestCase
     private $password = '123456789';
 
     // Table and Model
-    private $entity = 'contact';
+    private $table = 'contacts';
     private $model = Contact::class;
+
+    // Route
+    private $routeList = 'contact.index';
+    private $routeShow = 'contact.show';
+    private $routeStore = 'contact.store';
+    private $routeUpdate = 'contact.update';
+    private $routeDelete = 'contact.destroy';
+
+    // View
+    private $viewList = 'crud::list';
+    private $viewShow = 'contacts.show';
 
     // Expect fields
     private $not_null_fields = ['first_name','last_name','salutation','type','phone'];

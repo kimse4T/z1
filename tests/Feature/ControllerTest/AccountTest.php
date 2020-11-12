@@ -15,8 +15,19 @@ class AccountTest extends TestCase
     private $password = '123456789';
 
     // Table and Model
-    private $entity = 'account';
+    private $table = 'accounts';
     private $model = Account::class;
+
+    // Route
+    private $routeList = 'account.index';
+    private $routeShow = 'account.show';
+    private $routeStore = 'account.store';
+    private $routeUpdate = 'account.update';
+    private $routeDelete = 'account.destroy';
+
+    // View
+    private $viewList = 'crud::list';
+    private $viewShow = 'accounts.show';
 
     // Expect fields
     private $not_null_fields = ['name','email','phone','industry'];

@@ -12,7 +12,7 @@ class ContactViewTest extends TestCase
 
     protected $routeList = 'contact.index';
     protected $routeShow = 'contact.show';
-    protected $modelName = Contact::class;
+    protected $model = Contact::class;
     protected $viewList = 'crud::list';
     protected $viewShow = 'contacts.show';
     protected $email = 'dev@dev.com';

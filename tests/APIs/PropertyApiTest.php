@@ -11,7 +11,7 @@ use App\User;
 
 class PropertyApiTest extends TestCase
 {
-    use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
+    use ApiTestTrait;
 
 
     public function setUp():void

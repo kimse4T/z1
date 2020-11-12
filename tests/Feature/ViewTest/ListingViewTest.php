@@ -12,7 +12,7 @@ class ListingViewTest extends TestCase
 
     protected $routeList = 'listing.index';
     protected $routeShow = 'listing.show';
-    protected $modelName = Listing::class;
+    protected $model = Listing::class;
     protected $viewList = 'crud::list';
     protected $viewShow = 'listings.show';
     protected $email = 'dev@dev.com';

@@ -13,7 +13,7 @@ $factory->define(Contact::class, function (Faker $faker) {
         'salutation' => 'mr.',
         'type'       => 'owner',
         'phone'      => '123456789',
-        'created_at' => $faker->date('Y-m-d H:i:s'),
-        'updated_at' => $faker->date('Y-m-d H:i:s')
+        //'created_at' => $faker->date('Y-m-d H:i:s'),
+        //'updated_at' => $faker->date('Y-m-d H:i:s')
     ];
 });
